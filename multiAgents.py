@@ -167,8 +167,6 @@ def betterEvaluationFunction(currentGameState):
     """
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
-    
-    #TODO
 
 # Abbreviation
 better = betterEvaluationFunction
