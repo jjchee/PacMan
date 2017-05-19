@@ -168,10 +168,11 @@ def betterEvaluationFunction(currentGameState):
       DESCRIPTION: <write something here so we know what you did>
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #util.raiseNotDefined()
     
     """
         Factors to consider:
+        - Current score
         - Distance to ghosts
         - Number of capsules remaining
         - Food?
@@ -185,8 +186,22 @@ def betterEvaluationFunction(currentGameState):
     elif currentGameState.isLose():
         return sys.float_info.min
     
-    # Use a linear combination of weighted features for function score
+    # Get the number of remaining dots (capsules)
+    # The fewer dots on the board, the higher the score
+    num_capsules = len(currentGameState.getCapsules())
+    
+    # The current game score
+    current_score = currentGameState.getScore()
+    
+    #TODO Get distance to ghosts
+    
+    # Uses a linear combination of weighted features to determine evaluate score
+    evaluation_score = 1 * currentScore + -1 * numCapsules #TODO
 
+    # Note: Weights should be changed to variables so we can modify them with the learning function
+
+    return evaluation_score
+    
 # Abbreviation
 better = betterEvaluationFunction
 
