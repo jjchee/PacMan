@@ -129,21 +129,23 @@ class MinimaxAgent(MultiAgentSearchAgent):
             Returns the total number of agents in the game
         """
         "*** YOUR CODE HERE ***"
-        print "depth: " + str(self.depth)
+        # print "depth: " + str(self.depth)
         legalMoves = gameState.getLegalActions(0)
         bestMoves = []
         maxScore = float('-inf')
         for action in legalMoves:
             if action is not Directions.STOP:
-                nextState = gameState.generatePacmanSuccessor(action)
-                score = self.getMinMoves(nextState, self.depth, 1)
+                # nextState = gameState.generatePacmanSuccessor(action)
+                score = self.getMinMoves(gameState.generateSuccessor(0, action), self.depth, 1)
                 if score > maxScore:
                     maxScore = score
                     bestMoves = [action]
                 elif score == maxScore:
                     bestMoves.append(action)
 
-        return random.choice(bestMoves)
+        move = random.choice(bestMoves)
+        print(move)
+        return move
 
     def getMaxMoves(self, gameState, depth):
         if depth == 0 or gameState.isWin() or gameState.isLose():
@@ -152,8 +154,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
         maxScore = float('-inf')
         for action in legalMoves:
             if action is not Directions.STOP:
-                nextState = gameState.generatePacmanSuccessor(action)
-                score = self.getMinMoves(nextState, depth, 1)
+                # nextState = gameState.generatePacmanSuccessor(action)
+                score = self.getMinMoves(gameState.generateSuccessor(0, action), depth, 1)
                 if score > maxScore:
                     maxScore = score
         return maxScore
@@ -162,19 +164,19 @@ class MinimaxAgent(MultiAgentSearchAgent):
         if depth == 0 or gameState.isWin() or gameState.isLose():
             return self.evaluationFunction(gameState)
 
-        numGhosts = len(gameState.getGhostStates())
+        numGhosts = gameState.getNumAgents() - 1
         legalMoves = gameState.getLegalActions(agentIndex)
         minScore = float('inf')
         if agentIndex == numGhosts:
             for action in legalMoves:
-                nextState = gameState.generateSuccessor(agentIndex, action)
-                score = self.getMaxMoves(nextState, depth - 1)
+                # nextState = gameState.generateSuccessor(agentIndex, action)
+                score = self.getMaxMoves(gameState.generateSuccessor(agentIndex, action), depth - 1)
                 if score < minScore:
                     minScore = score
         else:
             for action in legalMoves:
-                nextState = gameState.generateSuccessor(agentIndex, action)
-                score = self.getMinMoves(nextState, depth, agentIndex + 1)
+                # nextState = gameState.generateSuccessor(agentIndex, action)
+                score = self.getMinMoves(gameState.generateSuccessor(agentIndex, action), depth, agentIndex + 1)
                 if score < minScore:
                     minScore = score
 
