@@ -207,6 +207,8 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
+        
+import sys # Get max and min float values
 
 def betterEvaluationFunction(currentGameState):
     """
@@ -216,8 +218,43 @@ def betterEvaluationFunction(currentGameState):
       DESCRIPTION: <write something here so we know what you did>
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #util.raiseNotDefined()
+    
+    """
+        Factors to consider:
+        - Current score
+        - Distance to ghosts
+        - Number of capsules remaining
+        - Food?
+    """
+    
+    player_position = currentGameState.getPacmanPosition(); # Get the position of the Pacman
+    
+    # Win = Very high score, Lose = Very low score
+    if currentGameState.isWin():
+        return sys.float_info.max
+    elif currentGameState.isLose():
+        return sys.float_info.min
+    
+    # The current game score
+    current_score = currentGameState.getScore()
+    
+    # Get the number of remaining large dots (capsules)
+    # The fewer capsules on the board, the higher the score
+    num_capsules = len(currentGameState.getCapsules())
+    
+    # Get the number of remaining small dots (food)
+    num_food = len(currenGameState.getFood().asList())
+    
+    #TODO Get distance to ghosts
+    
+    # Uses a linear combination of weighted features to determine evaluate score
+    evaluation_score = 1 * current_score + -1 * num_capsules -1 * num_food #TODO
 
+    # Note: Weights should be changed to variables so we can modify them with the learning function
+
+    return evaluation_score
+    
 # Abbreviation
 better = betterEvaluationFunction
 

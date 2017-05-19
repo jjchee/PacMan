@@ -1,4 +1,10 @@
 .DS_Store
+<<<<<<< HEAD
 .idea/*
 __pycache__/
 *.pyc
+=======
+*.pyc
+/.project
+/.pydevproject
+>>>>>>> 9ae0dc70e7c1c161270a6a47ec4e49ae0a2de464
