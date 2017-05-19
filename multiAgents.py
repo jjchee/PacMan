@@ -186,6 +186,9 @@ def betterEvaluationFunction(currentGameState):
     elif currentGameState.isLose():
         return sys.float_info.min
     
+    # The current game score
+    current_score = currentGameState.getScore()
+    
     # Get the number of remaining large dots (capsules)
     # The fewer capsules on the board, the higher the score
     num_capsules = len(currentGameState.getCapsules())
@@ -193,13 +196,10 @@ def betterEvaluationFunction(currentGameState):
     # Get the number of remaining small dots (food)
     num_food = len(currenGameState.getFood().asList())
     
-    # The current game score
-    current_score = currentGameState.getScore()
-    
     #TODO Get distance to ghosts
     
     # Uses a linear combination of weighted features to determine evaluate score
-    evaluation_score = 1 * current_score + -1 * num_capsules -1 * num_food#TODO
+    evaluation_score = 1 * current_score + -1 * num_capsules -1 * num_food #TODO
 
     # Note: Weights should be changed to variables so we can modify them with the learning function
 
