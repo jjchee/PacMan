@@ -143,15 +143,15 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 elif score == maxScore:
                     bestMoves.append(action)
 
-        move = random.choice(bestMoves)
         if len(bestMoves) > 1:
             print 'Pick random ' + str(bestMoves) + " score " + str(maxScore)
-        return move
+        elif maxScore > 50000000.0:
+            print 'Going to win: ' + str(maxScore)
+
+        return random.choice(bestMoves)
 
     def getMaxMoves(self, gameState, depth):
-        if gameState.isWin():
-            return self.evaluationFunction(gameState) - float(depth + 1)
-        if depth == 0 or gameState.isLose():
+        if depth == 0 or gameState.isWin() or gameState.isLose():
             return self.evaluationFunction(gameState)
         legalMoves = gameState.getLegalActions(0)
         maxScore = float('-inf')
