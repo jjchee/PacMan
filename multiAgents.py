@@ -218,25 +218,30 @@ def betterEvaluationFunction(currentGameState):
       evaluation function (question 5).
 
       DESCRIPTION: <write something here so we know what you did>
+      
+      Currently eval score depends on:
+          - Current game score
+          - Distance to closest food dot
+          - Number of food dots left
+          - Number of capsule dots remaining
+          - Distance to closest active ghost
+          - Distance to closest scared ghost
     """
     "*** YOUR CODE HERE ***"
-    #util.raiseNotDefined()
-    
-    """
-        Factors to consider:
-        - Current score
-        - Distance to ghosts
-        - Number of capsules remaining
-        - Food?
-    """
-    
-    player_position = currentGameState.getPacmanPosition(); # Get the position of the Pacman
-    
     # Win = Very high score, Lose = Very low score
     if currentGameState.isWin():
         return sys.float_info.max
     elif currentGameState.isLose():
         return sys.float_info.min
+    
+    player_position = currentGameState.getPacmanPosition(); # Get the position of the Pacman
+    
+    def get_manhattan_distances(positions): # Get the manhattan distances from the player for a list of objects
+        distances = []
+        for p in positions:
+            distances.append(util.manhattanDistance(player_position, p.getPosition()))
+            
+        return distances
     
     # The current game score
     current_score = currentGameState.getScore()
@@ -246,12 +251,39 @@ def betterEvaluationFunction(currentGameState):
     num_capsules = len(currentGameState.getCapsules())
     
     # Get the number of remaining small dots (food)
-    num_food = len(currenGameState.getFood().asList())
+    foods = currentGameState.getFood().asList()
+    num_food = len(foods)
     
-    #TODO Get distance to ghosts
+    # Get the distance to the closest food dot
+    dist_closest_food = min(get_manhattan_distances(foods))
+    
+    # Get the distance to the nearest scared/active ghost
+    ghost_states = currentGameState.getGhostStates()
+    scared_ghosts, active_ghosts = [], []
+    
+    for g in ghost_states: # Divide ghosts into scared and not scared
+        if g.scaredTimer:
+            scared_ghosts.append(g) # If ghost's scared timer is not (i.e. greater than) 0 add to scared group
+        else:
+            active_ghosts.append(g) # Else ghost is active add to not scared group         
+    
+    dist_closest_active_ghost = dist_closest_scared_ghost = sys.float_info.min
+    
+    if active_ghosts: # If active ghosts is not empty, find dist to closest
+        dist_closest_active_ghost = min(get_manhattan_distances(active_ghosts))
+    else:
+        dist_closest_active_ghost = sys.float_info.max
+        
+    # If closest ghost distance is >= 5 it will have the same effect on eval score (adjust this?)
+    dist_closest_active_ghost = max(dist_closest_active_ghost, 5)
+    
+    if scared_ghosts: # If scared ghosts not empty, find dist to closest
+        dist_closest_scared_ghost = min(get_manhattan_distances(scared_ghosts))
+    else:
+        dist_closest_scared_ghost = 0 # If there are no scared ghosts it has no effect on score
     
     # Uses a linear combination of weighted features to determine evaluate score
-    evaluation_score = 1 * current_score + -1 * num_capsules -1 * num_food #TODO
+    evaluation_score = 1 * current_score + -20 * num_capsules + -4 * num_food + -1.5 * dist_closest_food + -2 * (float(1) / dist_closest_active_ghost) + -2 * dist_closest_scared_ghost
 
     # Note: Weights should be changed to variables so we can modify them with the learning function
 
