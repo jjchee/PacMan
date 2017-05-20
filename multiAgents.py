@@ -101,7 +101,7 @@ class MultiAgentSearchAgent(Agent):
       is another abstract class.
     """
 
-    def __init__(self, evalFn = 'scoreEvaluationFunction', depth = '2'):
+    def __init__(self, evalFn = 'betterEvaluationFunction', depth = '2'): # Default 'scoreEvaluationFunction'
         self.index = 0 # Pacman is always agent index 0
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
@@ -255,7 +255,7 @@ def betterEvaluationFunction(currentGameState):
     num_food = len(foods)
     
     # Get the distance to the closest food dot
-    dist_closest_food = min(get_manhattan_distances(foods))
+    dist_closest_food = min(map(lambda p: util.manhattanDistance(player_position, p), foods))
     
     # Get the distance to the nearest scared/active ghost
     ghost_states = currentGameState.getGhostStates()
