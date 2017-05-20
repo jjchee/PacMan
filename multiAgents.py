@@ -144,7 +144,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
                     bestMoves.append(action)
 
         move = random.choice(bestMoves)
-        print(move)
+        if len(bestMoves) > 1:
+            print 'Pick random'
         return move
 
     def getMaxMoves(self, gameState, depth):
@@ -209,8 +210,6 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
-        
-import sys # Get max and min float values
 
 def betterEvaluationFunction(currentGameState):
     """
@@ -230,11 +229,11 @@ def betterEvaluationFunction(currentGameState):
     "*** YOUR CODE HERE ***"
     # Win = Very high score, Lose = Very low score
     if currentGameState.isWin():
-        return sys.float_info.max
+        return float('inf')
     elif currentGameState.isLose():
-        return sys.float_info.min
+        return float('-inf')
     
-    player_position = currentGameState.getPacmanPosition(); # Get the position of the Pacman
+    player_position = currentGameState.getPacmanPosition()  # Get the position of the Pacman
     
     def get_manhattan_distances(positions): # Get the manhattan distances from the player for a list of objects
         distances = []
@@ -266,14 +265,14 @@ def betterEvaluationFunction(currentGameState):
             scared_ghosts.append(g) # If ghost's scared timer is not (i.e. greater than) 0 add to scared group
         else:
             active_ghosts.append(g) # Else ghost is active add to not scared group         
-    
-    dist_closest_active_ghost = dist_closest_scared_ghost = sys.float_info.min
-    
+
+    dist_closest_active_ghost = dist_closest_scared_ghost = float('-inf')
+
     if active_ghosts: # If active ghosts is not empty, find dist to closest
         dist_closest_active_ghost = min(get_manhattan_distances(active_ghosts))
     else:
-        dist_closest_active_ghost = sys.float_info.max
-        
+        dist_closest_active_ghost = float('inf')
+
     # If closest ghost distance is >= 5 it will have the same effect on eval score (adjust this?)
     dist_closest_active_ghost = max(dist_closest_active_ghost, 5)
     
