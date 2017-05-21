@@ -101,7 +101,7 @@ class MultiAgentSearchAgent(Agent):
       is another abstract class.
     """
 
-    def __init__(self, evalFn = 'betterEvaluationFunction', depth = '2'): # Default 'scoreEvaluationFunction'
+    def __init__(self, evalFn = 'scoreEvaluationFunction', depth = '2'): # Default 'scoreEvaluationFunction'
         self.index = 0 # Pacman is always agent index 0
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
