@@ -34,7 +34,8 @@ def loadTrainingData(degree, filepath):
     y is the array (1-dimensional) of outputs 
     """
     trainingdata = loadtxt(filepath, delimiter=',')
-    
+    #print "degree = " + str(degree) + " length of trainingdata = " + str(len(trainingdata)) 
+    #print trainingdata 
     X = trainingdata[:, :degree]
     y = trainingdata[:, degree]
 
@@ -56,16 +57,18 @@ theta = zeros(shape=(7,1))
 theta, J_history = gradient_descent(it, y, theta, alpha, iterations)
 
 print "Using coefficients: ", theta[1:]
-
+print "my dir"
+print os.getcwd()
 c = theta[1:]
 c = [a for b in c for a in b]
 pacmanloc = os.path.join(os.getcwd(), "multiagent/pacman.py")
-os.chdir(os.path.join(os.getcwd(), "multiagent"))
+#os.chdir(os.path.join(os.getcwd(), "/Users/shlomonazarian/github/test1/PacMan"))
 betterArg = "evalFn=better,a={},b={},c={},d={},e={},f={}".format(c[0], c[1], c[2], c[3], c[4], c[5])
-command = ["python", "pacman.py", "-l", "smallClassic", "-p", "ExpectimaxAgent", "-a", betterArg, "-n", "10", "-q"]
+command = ["python", "pacman.py", "-p", "MinimaxAgent", "-a", "depth=3"]
+#command = ["python", "pacman.py", "-l", "smallClassic", "-p", "ExpectimaxAgent", "-a", betterArg, "-n", "10", "-q"]
 print ' '.join(command)
 output = subprocess.check_output(command)
-print output
+#print output
 
 plot(arange(iterations), J_history)
 xlabel('iterations')
