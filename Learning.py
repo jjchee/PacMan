@@ -5,7 +5,7 @@ import multiAgents
 # it randomly generates a coefficient between -4 and 4 
 # for each feature. 
 
-destfile = "C:\Users\IBM_ADMIN\Documents\output.txt"
+destfile = "output.txt"
 def runPacman(c):
     "runs pacman with the given constants, returns the score #"
     # the coefficients are sent in as additional arguments to the eval

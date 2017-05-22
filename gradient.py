@@ -41,7 +41,7 @@ def loadTrainingData(degree, filepath):
     return X, y
 
 # get the training data
-X, y = loadTrainingData(6, os.path.join(os.getcwd(), "C:\Users\IBM_ADMIN\Documents\output.txt"))
+X, y = loadTrainingData(6, os.path.join(os.getcwd(), "output.txt"))
 
 m = y.size
 y.shape = (m, 1)
