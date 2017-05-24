@@ -11,25 +11,12 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-import subprocess, re
+
 from util import manhattanDistance
 from game import Directions
-import math
 import random, util
 
 from game import Agent
-
-_w1 = _w2 = _w3 = _w4 = _w5 = _w6 = 0.0
-def storeConstants(w1, w2, w3, w4, w5, w6):
-  global _w1, _w2, _w3, _w4, _w5, _w6
-  _w1 = float(w1)
-  _w2 = float(w2)
-  _w3 = float(w3)
-  _w4 = float(w4)
-  _w5 = float(w5)
-  _w6 = float(w6)
-
-
 
 class ReflexAgent(Agent):
     """
@@ -98,6 +85,7 @@ def scoreEvaluationFunction(currentGameState):
       (not reflex agents).
     """
     return currentGameState.getScore()
+    
 
 class MultiAgentSearchAgent(Agent):
     """
@@ -114,18 +102,21 @@ class MultiAgentSearchAgent(Agent):
       is another abstract class.
     """
 
-    def __init__(self, evalFn = 'scoreEvaluationFunction', depth = '2', w1=0,w2=0,w3=0,w4=0,w5=0,w6=0):
+    def __init__(self, evalFn = 'betterEvaluationFunction', depth = '2', w1 = 1, w2 = -20, w3 = -4, w4 = -1.5, w5 = -2, w6 = -2): # Default 'scoreEvaluationFunction'
         self.index = 0 # Pacman is always agent index 0
-        self.depth = int(depth)
-        storeConstants(w1, w2, w3, w4, w5, w6)
-        # self.a = a
-        # print "a: ", a
-        # b = b
-        # c = c
-        # d = d
-        # e = e
-        # f = f
         self.evaluationFunction = util.lookup(evalFn, globals())
+        self.depth = int(depth)
+        
+        # Set the weights to use for each feature in eval function (default manual weights)
+        global _w1, _w2, _w3, _w4, _w5, _w6
+        _w1 = float(w1)
+        _w2 = float(w2)
+        _w3 = float(w3)
+        _w4 = float(w4)
+        _w5 = float(w5)
+        _w6 = float(w6)
+        
+        print 'Using weights:' + str([_w1, _w2, _w3, _w4, _w5, _w6])
 
 class MinimaxAgent(MultiAgentSearchAgent):
     """
@@ -233,8 +224,8 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
-
-
+        
+_w1 =_w2 = _w3 = _w4 = _w5 = _w6 = 0. # The weights to use in the eval function  
 
 def betterEvaluationFunction(currentGameState):
     """
@@ -306,29 +297,18 @@ def betterEvaluationFunction(currentGameState):
         dist_closest_scared_ghost = min(get_manhattan_distances(scared_ghosts))
     else:
         dist_closest_scared_ghost = 0 # If there are no scared ghosts it has no effect on score
-        
-    #w1 = 1
-    #w2 = -20
-    #w3 = -4
-    #w4 = -1.5
-    #w5 = -2
-    #w6 = -2
     
     # Uses a linear combination of weighted features to determine evaluate score
-    #evaluation_score = 1 * current_score + -20 * num_capsules + -4 * num_food + -1.5 * dist_closest_food + -2 * (float(1) / dist_closest_active_ghost) + -2 * dist_closest_scared_ghost
+    
+    #evaluation_score = 1 * current_score + -20 * num_capsules + -4 * num_food + -1.5 * dist_closest_food + -2 * (float(1) / dist_closest_active_ghost) + -2 * dist_closest_scared_ghost # Manual evaluation score
+
+    # Multiply each feature by the weight determined using gradient descent (defaults to manual weights)
     evaluation_score = _w1 * current_score + _w2 * num_capsules + _w3 * num_food + _w4 * dist_closest_food + _w5 * (float(1) / dist_closest_active_ghost) + _w6 * dist_closest_scared_ghost
+    
     # Note: Weights should be changed to variables so we can modify them with the learning function
-    #print w1
-    #print w2
-    #print w3
-    #print w4
-    #print w5
-    #print w6
+    
     return evaluation_score
     
 # Abbreviation
 better = betterEvaluationFunction
-
-
-    
 
