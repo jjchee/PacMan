@@ -1,8 +1,8 @@
 # AI PAC-MAN GAME PLAYING AGENT
 
-## SUMMARY
-
 Using Artificial Intelligence, we developed a bot that plays Pac-Man. The bot has a 98% win rate and scores 83% more points than a reflex agent, on average. We implemented the minimax decision rule with six features and learned weights obtained from gradient descent.
+
+![Pac-Man UI](https://i.imgur.com/PLyhLSZ.png)
 
 ## HOW TO RUN THE APPLICATION
 
